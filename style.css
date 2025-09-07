@@ -1,0 +1,306 @@
+/* ===============================
+   BIRTHDAY CELEBRATION STYLES
+   Cleaned + vendor prefixed
+   =============================== */
+
+/* ---------- Variables ---------- */
+:root {
+  --bg-dark-1: rgb(0, 0, 0);
+  --bg-dark-2: rgb(45, 2, 82);
+  --bg-dark-3: rgb(203, 17, 48);
+
+  --highlight: #ff66cc;
+  --gold: #ffd700;
+  --sparkle: #ffffff;
+
+  --door-color: #3c2a21;
+  --door-frame: #d4af37;
+
+  --card-width: 220px;
+  --card-height: 300px;
+}
+
+/* ---------- Reset ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(
+    120deg,
+    var(--bg-dark-1) 0%,
+    var(--bg-dark-2) 60%,
+    var(--bg-dark-3) 100%
+  );
+  background-attachment: fixed;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ---------- Entrance ---------- */
+.entrance {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* Curtains */
+.curtains {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  z-index: 2;
+}
+.curtain {
+  flex: 1;
+  background: repeating-linear-gradient(
+    to bottom,
+    #b30505 0%,
+    #660000 20%,
+    #800000 40%
+  );
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.7);
+  transition: transform 2s ease-in-out;
+}
+.curtain.left { transform-origin: left; }
+.curtain.right { transform-origin: right; }
+.curtains.open .curtain.left { transform: translateX(-100%); }
+.curtains.open .curtain.right { transform: translateX(100%); }
+
+/* Door */
+.door {
+  width: 320px;
+  height: 480px;
+  background: var(--door-color);
+  border: 8px solid var(--door-frame);
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.9);
+  position: relative;
+  cursor: pointer;
+  transition: transform 2s cubic-bezier(0.77,0.2,0.05,1.0);
+  z-index: 3;
+  overflow: hidden;
+}
+.door.open { transform: perspective(1000px) rotateY(-100deg); }
+
+/* Door details */
+.door::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    #2d1b12 0%,
+    #3c2a21 20%,
+    #2d1b12 40%
+  );
+  opacity: 0.5;
+}
+.door-handle {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  background: var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--gold);
+}
+
+/* ---------- Celebration ---------- */
+.celebration {
+  position: relative;
+  padding: 100px 40px;
+  text-align: center;
+}
+
+.headline {
+  font-size: 3rem;
+  text-shadow: 0 0 10px var(--gold), 0 0 20px var(--highlight);
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: scale(1);
+  transition: ease-in-out;
+}
+.headline.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Confetti container */
+#confetti-root {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 10000;
+  overflow: hidden;
+}
+
+/* Sparkle particles */
+.sparkle {
+  position: absolute;
+  width: 6px; height: 6px;
+  background: var(--sparkle);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--sparkle), 0 0 12px var(--gold);
+  animation: sparkleFall linear forwards;
+}
+@keyframes sparkleFall {
+  from { transform: translateY(-10vh) scale(0.6); opacity: 1; }
+  to   { transform: translateY(110vh) scale(1.2); opacity: 0; }
+}
+
+/* ---------- Gallery ---------- */
+.gallery-wrap {
+  margin-top: 80px;
+}
+.gallery-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-shadow: 0 0 10px var(--highlight);
+}
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+/* Card flip effect */
+.card {
+  width: var(--card-width);
+  height: var(--card-height);
+  perspective: 1200px;
+  transition: filter 0.5s ease;
+}
+.card-inner {
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.77,0,0.175,1);
+}
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+.card.muted { filter: blur(3px) brightness(0.7); }
+
+/* Card faces */
+.card-front, .card-back {
+  position: absolute;
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+.card-front {
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-front img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease, filter 0.6s ease;
+}
+.card-front:hover img {
+  transform: scale(1.08) rotate(1deg);
+  filter: brightness(1.1);
+}
+.card-back {
+  background: linear-gradient(135deg, #ff99cc, #663399);
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.card-back p {
+  font-size: 1.2rem;
+  text-shadow: 0 0 8px #000;
+}
+
+/* ---------- Music Controls ---------- */
+.music-control {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  width: 60px; height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 0 10px var(--gold);
+  z-index: 20000;
+}
+.music-control:hover {
+  background: rgba(255,255,255,0.3);
+}
+.music-control svg {
+  width: 30px; height: 30px;
+  fill: var(--gold);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .headline { font-size: 2.2rem; }
+  .card { width: 180px; height: 240px; }
+}
+@media (max-width: 480px) {
+  .headline { font-size: 1.8rem; }
+  .card { width: 140px; height: 200px; }
+}
+/* Sparkling & Shining Headline */
+.headline {
+  font-size: 3rem;
+  text-shadow: 0 0 10px var(--gold), 0 0 20px var(--highlight);
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 1s ease-in-out;
+  animation: sparkleText 2s infinite alternate; /* rapid sparkling */
+}
+
+/* Keyframes for rapid glowing/sparkle */
+@keyframes sparkleText {
+  0% {
+    text-shadow: 0 0 5px var(--gold), 0 0 10px var(--highlight), 0 0 15px #fff;
+    color: #fff;
+  }
+  25% {
+    text-shadow: 0 0 15px var(--gold), 0 0 25px var(--highlight), 0 0 35px #fff;
+    color: #ffcc00;
+  }
+  50% {
+    text-shadow: 0 0 25px var(--gold), 0 0 35px var(--highlight), 0 0 45px #fff;
+    color: #ff66cc;
+  }
+  75% {
+    text-shadow: 0 0 15px var(--gold), 0 0 25px var(--highlight), 0 0 35px #fff;
+    color: #000000;
+  }
+  100% {
+    text-shadow: 0 0 5px var(--gold), 0 0 10px var(--highlight), 0 0 15px #fff;
+    color: #000000;
+  }
+}
